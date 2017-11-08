@@ -87,7 +87,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="404.html">Data Archive</a>
+                        <a href="data-browsing.html">Data Archive</a>
                     </li>
                     <li>
                         <a href="status.php#">Observing Status</a>

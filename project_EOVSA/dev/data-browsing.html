@@ -27,6 +27,67 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+<script language=javascript>
+<!--
+function toTwoChar(num)
+{
+  var temp=num.toString()
+  if (num < 10) temp="0"+temp
+  return temp
+}
+
+function getDate() { return document.clock.date.value }
+
+function getTime() { return document.clock.time.value }
+
+function setDate(s) { setChanged(true); document.clock.date.value = s}
+
+function setTime(s)
+{
+  //Times between 000000 and 240000 are treated as "today"
+  //Times between 240000 and 480000 are treated as "tomorrow"
+  //Times between 480000 and 720000 are treated as "yesterday"
+
+  setChanged(true)
+
+  if (s >= "240000") {
+    if (s < "480000") {
+      shiftTime(86400)
+      s = toTwoChar(s.substring(0,2)-24)+s.substring(2,6)
+    } else {
+      shiftTime(-86400)
+      s = toTwoChar(s.substring(0,2)-48)+s.substring(2,6)
+    }
+  }
+  document.clock.time.value = s
+}
+
+function shiftTime(seconds)
+{
+  var d = getDate()
+  var t = getTime()
+  var u = new Date(d.substring(0,4),d.substring(4,6)-"00"-1,d.substring(6,8)-"00",t.substring(0,2)-"00",t.substring(2,4)-"00",t.substring(4,6)-"00"+seconds)
+  var y = u.getYear()
+  if (y < 1000) y += 1900
+  setDate(y+toTwoChar(u.getMonth()+1)+toTwoChar(u.getDate()))
+  setTime(toTwoChar(u.getHours())+toTwoChar(u.getMinutes())+toTwoChar(u.getSeconds()))
+}
+
+function getURL() {
+  var date = getDate()
+  var time = getTime()
+  var year4 = date.substring(0,4)
+  var year2 = year4.substring(2,4)
+  var month = date.substring(4,6)
+  var day = date.substring(6,8)
+  var hour = time.substring(0,2)
+  var minute = time.substring(2,4)
+  var second = time.substring(2,4)
+  URL = "http://ovsa.njit.edu/flaremon/daily/"+year4+"/XSP"+date+".png"
+  return URL
+}
+//-->
+</script>
 </head>
 
 <body id="page-top">
@@ -97,13 +158,13 @@
                <!-- Page Heading/Breadcrumbs -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">About
-                    <small>Science</small>
+                <h1 class="page-header">Data
+                    <small>Archive</small>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="index.html">Home</a>
                     </li>
-                    <li class="active">Science</li>
+                    <li class="active">Data Archive</li>
                 </ol>
             </div>
         </div>
@@ -128,107 +189,44 @@
             <div class="col-md-9">
                 <div class ="row">
                     <div class="col-md-12">
-                        <h2 class="page-header">Magnetic and Plasma Structure Above Active Regions</h2>
+                        <h2 class="page-header">Browse Data Coverage</h2>
                     </div>
                     <div align="justify" class="col-md-6">
-                        <p><strong>Coronal Magnetography:</strong> Quantitative knowledge of coronal magnetic fields is fundamental to understanding many solar phenomena. The Expanded OVSA will directly measure magnetic field strength in active regions everywhere on the disk and above the limb. The innovation is OVSA's ability to perform greatly improved imaging spectroscopy over a continuous range of frequencies, enabling the first routine application of true coronal magnetography.</p>
+                        <p><strong>Daily Spectrogram:</strong> These plots show the daily dynamic spectrum (frequency-time diagram) of cross-power amplitude on the shorter baselines.</p>
                         <p>&nbsp;</p>
                     </div>
                     <div class="col-md-6" align="center">
-                        <img class="img-responsive" src="img/science/coronal_mag.jpg" alt="">
-                        <p>Coronal magnetography. Credit: Jeongwoo Lee</p>
+                        <img class="img-responsive" src="http://ovsa.njit.edu/flaremon/daily/2017/XSP20171107.png" alt="">
+                        <p>Daily Spectrogram Overview Plot</p>
                     </div>
                     <div align="justify" class="col-md-6">
                         <p>&nbsp;</p>
-                        <p><strong>Temperature, Density, Nonthermal Electrons:</strong> In addition to magnetic fields, the spatially resolved microwave spectrum also provides measurements of temperature and column density as well as information on nonthermal particles in active regions. Multifrequency images will provide full-disk maps of coronal temperature and density to address the important topic of the nature and location of the source of heating of coronal loops.
+                        <p><strong>Raw "Interim" Database (IDB) Data:</strong> The original concept for EOVSA was to record the full-resolution data (1-s time resolution and full frequency resolution) as an "interim" database that would be further reduced in size for different applications (e.g. flares, active regions, full Sun).  Then we planned to delete the IDB files due to their relatively large size--too large a data volume to archive.  However, in practice the files are not too large to archive in their full resolution, given today's storage capacity, and therefore these are made available at full resolution (Click the link at right.) These are recorded in Miriad format, and hence may not be that useful for most people.  Be patient after clicking the link--this is a very long list of directories, one for each available date.
                         </p>
                         <p>&nbsp;</p>
                     </div>
                     <div class="col-md-6" align="center">
-                        <img class="img-responsive" src="img/science/AR_image.jpg" alt="">
-                        <p>Model active region image after 4h aperture synthesis. Credit: Stephen White</p>
-                    </div>
-                </div>
-
-                <!-- Section -->
-                <div class="row">
-
-                    <div class="col-md-12">
-                        <h2 class="page-header">Flaring Loops and Particle Acceleration in Solar Flares</h2>
-                    </div>
-                    <div align="justify" class="col-md-6">
-                        <p><strong>Electrons and Magnetic Fields in Flaring Loops:</strong> One of the outstanding problems in solar physics is to better understand the process of magnetic energy release and subsequent particle acceleration and transport. Radio emission is extremely sensitive to electrons at their acceleration sites in the corona, and has a unique dependence on magnetic field strength and direction within the flaring source.</p>
-                        <p>&nbsp;</p>
-                    </div>
-                    <div class="col-md-6" align="center">
-                        <img class="img-responsive" src="img/science/Flaring_Loop.jpg" alt="">
-                        <p>Model (left) and simulated (right) multifrequency images from a flaring loop. Credit: Gelu Nita & Gregory Fleishman</p>
+                        <p><a href="http://www.ovsa.njit.edu/fits/IDB">Interim Database (IDB) file link</a></p>
                     </div>
                     <div align="justify" class="col-md-6">
                         <p>&nbsp;</p>
-                        <p><strong>Dynamic Imaging and Turbulence:</strong> The polarized brightness temperature spectrum will be imaged on ~1 s timescale. In some theories, turbulence creates distinct spectral characteristics that, if present, can be used to infer the level of turbulence in the source. Through a better understanding of the timing and extent of electron acceleration, firm constraints will be placed on the reconnection process itself.
-                        </p>
-                    </div>
-                    <div class="col-md-6" align="center">
-                        <img class="img-responsive" src="img/science/Flaring_Loop.gif" alt="" align="center">
-                        <p>Brightness temperature spectra from various parts of the loop. Credit: Gregory Fleishman.</p>
-                        <p>&nbsp;</p>
-                    </div>
-                </div>
-
-                <!-- Section -->
-                <div class="row">
-
-                    <div class="col-md-12">
-                        <h2 class="page-header">Drivers of Space Weather</h2>
-                    </div>
-                    <div align="justify" class="col-md-6">
-                        <p><strong>F10.7 Images:</strong> One of the longest running indices of solar activity is the 10.7 cm (2.8 GHz) radio flux (F10.7). F10.7 full-disk images will be obtained at least twice per day. This is analogous to having soft X-ray images in addition to the GOES soft X-ray fluxes, and can be an important way of putting better understanding behind the use of this solar activity index.</p>
-                        <p>&nbsp;</p>
-                    </div>
-                    <div class="col-md-6" align="center">
-                        <img class="img-responsive" src="img/science/F10.7_full_tmb.jpg" alt="">
-                        <p>Model full disk F10.7 image after full-day aperture synthesis . Credit: Stephen White/Dale Gary</p>
-                    </div>
-                    <div align="justify" class="col-md-6">
-                        <p>&nbsp;</p>
-                        <p><strong>Eruptive Events:</strong> Microwave images will capture the morphology and evolution of eruptive events in which not only particles but also magnetized plasma are ejected. Dense, relatively cool plasma in erupting filaments and surges will be strongly visible through free-free emission, and nonthermal particles entrained will produce visible emission. This includes imaging of high-frequency (>1 GHz) type III bursts (electron beams streaming outward in the corona) as they traverse high loops or escape into the heliosphere.
+                        <p><strong>Raw UDB Data:</strong> This is the same as for the IDB data, except with 1-minute time integration applied. This is typically not useful for flares, but is perfectly fine for imaging active regions and full Sun.  (Click the link at right.) These are also in Miriad format, and hence may not be that useful for most people. After clicking the link, you will see a short list of directories, one for each year.  However, clicking on a year takes you to a very long list of available data, so again be patient while the list loads.
                         </p>
                         <p>&nbsp;</p>
                     </div>
                     <div class="col-md-6" align="center">
-                        <img class="img-responsive" src="img/science/eruption.jpg" alt="">
-                        <p>Nobeyama image of erupting prominence at 17 GHz. Credit: NoRH</p>
-                    </div>
-                </div>
-
-                   <!-- Section -->
-                <div class="row">
-
-                    <div class="col-md-12">
-                        <h2 class="page-header">Night-Time Observations of Variable and Transient Sources</h2>
-                    </div>
-                    <div align="justify" class="col-md-6">
-                        <p><strong>Blazars:</strong> These are the nuclei of active galaxies that have a relativistic jet pointing almost directly at Earth. Two very different theories have been proposed to explain the gamma-ray emission from blazars. We will use the two 27-m telescopes to observe a few hundred objects, and thereby obtain invaluable information on the spectral and temporal evolution of radio flares in these blazars, with the goal being to determine the currently unknown jet collimation mechanism.</p>
-                        <p>&nbsp;</p>
-                    </div>
-                    <div class="col-md-6" align="center">
-                        <img class="img-responsive" src="img/science/blazar.jpg" alt="">
-                        <p>Credit: NASA/Goddard Space Flight Center Conceptual Image Lab</p>
+                        <p><a href="http://www.ovsa.njit.edu/fits/UDB">1-minute Integrated Data (UDB) file link</a></p>
                     </div>
                     <div align="justify" class="col-md-6">
                         <p>&nbsp;</p>
-                        <p><strong>Long Duration Radio Transients (LDRTs):</strong> The two 27-m telescopes will search for examples of a new class of transient radio sources, with time scales longer than 30 min but shorter than several days, found by Bower et al. (2007) and Kida et al. (2008). OVSA equipped with cooled wide band receivers and processing capacity in the range 2–18 GHz can make great progress in the area of LDRTs. We estimate that 4-13 events will be detected per year.
+                        <p><strong>CASA UDBms Data:</strong> These are CASA measurement sets for each of the UDB data files.  As such, they also have one-minute integration applied. This is typically not useful for flares, but is perfectly fine for imaging active regions and full Sun.  (Click the link at right.) After clicking the link, you will see a short list of directories, one for each year and month.
                         </p>
                         <p>&nbsp;</p>
                     </div>
                     <div class="col-md-6" align="center">
-                        <img class="img-responsive" src="img/science/aa14873-10.jpg" alt="">
-                        <p>Credit: Yoldas et al., A&A 515, L2 (2010)</p>
+                        <p><a href="http://www.ovsa.njit.edu/fits/UDBms">Link to 1-minute Integrated Data, in the form of CASA measurement sets</a></p>
                     </div>
                 </div>
-            </div>
-        </div>
 
 
         <hr>
