@@ -74,7 +74,7 @@
                               </li>";
                     } else {
                         echo "<li>
-                                <a href=\"http://ovsa.njit.edu/dev/data-browsing/\">Data Archive</a>
+                                <a href=\"http://ovsa.njit.edu/dev/data-browsing.html\">Data Archive</a>
                             </li>";
                     }
                     ?>
